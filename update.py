@@ -1,4 +1,3 @@
-update.py
 import requests
 from PIL import Image, ImageDraw, ImageFont
 import datetime
