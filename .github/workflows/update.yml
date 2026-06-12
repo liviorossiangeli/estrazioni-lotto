@@ -23,7 +23,8 @@ jobs:
         pip install pillow requests
 
     - name: Run update script
-      run: python update.py
+      run: python ${{ github.workspace }}/update.py
+
 
     - name: Commit updated image
       run: |
