@@ -1,0 +1,34 @@
+name: Aggiorna estrazioni
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # Aggiorna ogni 6 ore
+  workflow_dispatch:        # Permette di avviare manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install pillow requests
+
+    - name: Run update script
+      run: python update.py
+
+    - name: Commit updated image
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add estrazioni.png estrazioni_raw.html
+        git commit -m "Aggiornamento automatico estrazioni" || echo "Nessun cambiamento da salvare"
+        git push
