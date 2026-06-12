@@ -2,8 +2,8 @@ name: Aggiorna estrazioni
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # Aggiorna ogni 6 ore
-  workflow_dispatch:        # Permette di avviare manualmente
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        persist-credentials: true
 
     - name: Setup Python
       uses: actions/setup-python@v4
@@ -25,7 +27,6 @@ jobs:
     - name: Run update script
       run: python ${{ github.workspace }}/update.py
 
-
     - name: Commit updated image
       run: |
         git config --global user.name "github-actions"
@@ -33,3 +34,4 @@ jobs:
         git add estrazioni.png estrazioni_raw.html
         git commit -m "Aggiornamento automatico estrazioni" || echo "Nessun cambiamento da salvare"
         git push
+
